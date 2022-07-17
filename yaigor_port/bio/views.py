@@ -2,16 +2,38 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from .models import *
 
-menu = ['О сайте', 'Добавить', 'Обратная связь', 'Войти']
+menu = [{'title': 'О сайте', 'url_name': 'about'},
+        {'title': 'Добавить статью', 'url_name': 'add_page'},
+        {'title': 'Обратная связь', 'url_name': 'contact'},
+        {'title': 'Войти', 'url_name': 'login'}
+]
 
 
 def index(request):
     posts = Bio.objects.all()
-    return render(request, 'bio/index.html', {'posts': posts, 'menu': menu, 'title': 'Главная страница'})
+    context = {
+        'posts': posts,
+        'menu': menu,
+        'title': 'Главная страница'
+    }
+
+    return render(request, 'bio/index.html', context=context)
 
 
 def about(request):
     return render(request, 'bio/about.html', {'menu': menu, 'title': 'О сайте'})
+
+
+def addpage(request):
+    return HttpResponse('Add post')
+
+
+def contact(request):
+    return HttpResponse('Contact with us')
+
+
+def login(request):
+    return HttpResponse('Sing in')
 
 
 def categories(request, catid):
